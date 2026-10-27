@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Coloring Book</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: #f5f1e8;
+            color: #252525;
+            font-family: Arial, sans-serif;
+        }
+
+        main {
+            width: min(100%, 560px);
+            padding: 32px;
+            border: 2px solid #252525;
+            border-radius: 20px;
+            background: #fffdf8;
+            box-shadow: 7px 7px 0 #252525;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: clamp(1.8rem, 6vw, 2.4rem);
+        }
+
+        p {
+            margin: 0 0 24px;
+            color: #555;
+        }
+
+        .palette {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .color-swatch {
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border: 3px solid #252525;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 120ms ease, box-shadow 120ms ease;
+        }
+
+        .color-swatch:hover,
+        .color-swatch:focus-visible {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 0 #252525;
+        }
+
+        .color-swatch[aria-pressed="true"] {
+            outline: 3px solid #252525;
+            outline-offset: 4px;
+        }
+
+        .flower {
+            display: block;
+            width: min(100%, 340px);
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .flower-part {
+            fill: #fff;
+            stroke: #252525;
+            stroke-width: 5;
+            stroke-linejoin: round;
+            transition: fill 180ms ease;
+        }
+
+        @media (max-width: 420px) {
+            main {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Little Coloring Book</h1>
+        <p>Choose a color, then click an area of the flower to paint it.</p>
+
+        <div class="palette" aria-label="Choose a color">
+            <button class="color-swatch" type="button" aria-label="Red" aria-pressed="false" style="background-color: #ef5350" data-color="#ef5350"></button>
+            <button class="color-swatch" type="button" aria-label="Orange" aria-pressed="false" style="background-color: #ff9800" data-color="#ff9800"></button>
+            <button class="color-swatch" type="button" aria-label="Yellow" aria-pressed="false" style="background-color: #ffca28" data-color="#ffca28"></button>
+            <button class="color-swatch" type="button" aria-label="Green" aria-pressed="false" style="background-color: #66bb6a" data-color="#66bb6a"></button>
+            <button class="color-swatch" type="button" aria-label="Blue" aria-pressed="false" style="background-color: #42a5f5" data-color="#42a5f5"></button>
+            <button class="color-swatch" type="button" aria-label="Purple" aria-pressed="false" style="background-color: #ab47bc" data-color="#ab47bc"></button>
+        </div>
+
+        <svg class="flower" viewBox="0 0 300 300" role="img" aria-label="A flower coloring picture">
+            <path class="flower-part" d="M143 165 C133 194 127 224 127 260 L173 260 C173 224 167 194 157 165 Z"></path>
+            <path class="flower-part" d="M128 213 C105 193 87 197 72 210 C91 231 111 235 130 225"></path>
+            <path class="flower-part" d="M172 213 C195 193 213 197 228 210 C209 231 189 235 170 225"></path>
+            <ellipse class="flower-part" cx="150" cy="91" rx="33" ry="48"></ellipse>
+            <ellipse class="flower-part" cx="150" cy="169" rx="33" ry="48"></ellipse>
+            <ellipse class="flower-part" cx="111" cy="130" rx="48" ry="33" transform="rotate(-45 111 130)"></ellipse>
+            <ellipse class="flower-part" cx="189" cy="130" rx="48" ry="33" transform="rotate(45 189 130)"></ellipse>
+            <circle class="flower-part" cx="150" cy="130" r="31"></circle>
+        </svg>
+    </main>
+
+    <script>
+        const swatches = document.querySelectorAll(".color-swatch");
+        const flowerParts = document.querySelectorAll(".flower-part");
+        let selectedColor = null;
+
+        swatches.forEach((swatch) => {
+            swatch.addEventListener("click", () => {
+                selectedColor = swatch.dataset.color;
+
+                swatches.forEach((button) => {
+                    button.setAttribute("aria-pressed", String(button === swatch));
+                });
+            });
+        });
+
+        flowerParts.forEach((part) => {
+            part.addEventListener("click", () => {
+                if (selectedColor) {
+                    part.style.fill = selectedColor;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
